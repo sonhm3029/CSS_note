@@ -91,7 +91,7 @@ Xem ảnh sau để biết flex box ảnh hưởng thế nào đến content:
 
 Khi đó block contain được gọi là `flex container` còn các element bên trong trực tiếp của nó được gọi là `flex item`. Như hình.
 
-### 1. Các thuộc tính của flex container 
+### 1. Các thuộc tính của flex container
 
 **Theo dõi hình ta có các thuộc tính của `flex container`:**
 
@@ -175,6 +175,8 @@ Với `transform` property ta có thể sử dụng 2D transformation với các
 ### 1. translate
 
 - `translate()` method dùng để di chuyển elment theo trục X và Y. Giống với `position` nhưng là dịch chuyển thuận.
+
+- Khi dịch chuyển thì normal position của element remain tức là để lại khoảng trống tại vị trí ban đầu.
 
 **Ví dụ:**
 
@@ -273,6 +275,106 @@ Ví dụ :
 
 ## V. Animation
 
-## VI. Keyframe
+Property | Description | Values
+---------|-------------|--------
+`@keyframes`|Khai báo animation
+`animation-name`|tên của animation được khai báo bởi `keyframe`
+`animation-duration`|khoảng thời gian diễn ra animation| Thời gian ví dụ `2s`
+`animation-delay`|Khoảng thời gian delay trước khi diễn ra animation| Thời gian. Nếu mang giá trị âm ví dụ `-2` thì animation sẽ chạy từ thời điểm 2s trong `animation duration`
+`animation-iteration-count`|Số lần lặp lại animation| số lần ví dụ `4` hoặc `infinitive` lặp mãi mãi
+`animation-direction`|xác định animation sẽ được chạy thuận hay nghịch theo khai báo của `keyframe`|- `normal`: đây là default<br>- `reverse`: animation chạy ngược với khai báo trong `keyframe`<br> - `alternate`: animation sẽ chạy thuận đến kết thúc animation r lại chạy ngược lại.<br> - `alternate-reverse`: ngược lại với `alternate`
+`animation-timing-function`|Set sự diễn ra nhanh hay chậm trên từng khoảng thời gian của animation|- `ease`: bắt đầu chậm, rồi nhanh, rồi kết thực chậm <br> - `linear`: Same speed thông suốt animation....
+`animation-fill-mode`|Set trạng thái của element khi không xảy ra animation nữa|- none: default, nó sẽ trở về vị trí ban đầu khi kết thúc animation<br> - `forwards`: element sẽ remain trạng thái của last keyframe khi kết thúc animation.<br>- `backwards`: element sẽ apply trạng thái đầu tiên của `keyframe` trong suốt thời gian delay (trước khi bắt đầu animation)<br>- `both` element sẽ apply cả `forwards` và`backwards`.
+`animation`|Công thức short hand
+
+Để sử dụng Animation ta cần định nghĩa một `@keyframe` để xác định sự thay đổi của element từ trạng thái ban đầu đến trạng thái nào đó
+
+**Ví dụ:**
+
+```css
+    @keyframes animation_name {
+        from {background-color: red;}
+        to {background-color green;}
+    }
+```
+
+Ở trên ta đã định nghĩa một animation với thuộc tính `animation_name` là animation_name( cái này là do coder đặt). Có trạng thái thay đổi từ `background` màu đỏ ban đầu và kết thức là màu xanh lá cây.
+
+Có thể sử dụng `%` để thêm nhiều style change khi animation đạt đến % nào đó của cả `animation-duration`.
+
+```css
+    @keyframes example {
+        0%   {background-color: red;}
+        25%  {background-color: yellow;}
+        50%  {background-color: blue;}
+        100% {background-color: green;}
+    }
+
+```
+
+```css
+    @keyframes example {
+        0%   {background-color:red; left:0px; top:0px;}
+        25%  {background-color:yellow; left:200px; top:0px;}
+        50%  {background-color:blue; left:200px; top:200px;}
+        75%  {background-color:green; left:0px; top:200px;}
+        100% {background-color:red; left:0px; top:0px;}
+    }
+```
+
+Như vậy với `0%` bằng với `from` và `100%` bằng với trạng thái cuối cùng. Ví dụ duration của animation là 4s thì animation trên sẽ diễn ra theo thứ tự: background đầu tiên có màu đỏ, giây thứ nhất sẽ chuyển thành màu vàng, giây thứ 2 sẽ chuyển sang màu xanh da trời và cuối cùng sẽ chuyển thành màu xanh lá cây.
+
+- Sau khi định nghĩa `@keyframe` ta sẽ thêm animation vào style. Ví dụ cho vào thẻ `div`
+
+**Syntax short hand của animation:**
+
+Khai báo thông thường
+
+```css
+    div {
+        animation-name: example;
+        animation-duration: 5s;
+        animation-timing-function: linear;
+        animation-delay: 2s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+```
+
+Với short hand
+
+```css
+    div {
+        animation: example 5s linear 2s infinite alternate;
+    }
+```
+
+[Xem thêm tại](https://www.w3schools.com/css/css3_animations.asp)
+
+Ngoài ra còn có thuộc tính `animation-play-state` với các giá trị:
+
+- `running`: default, chạy bình thường
+- `paused`: animation được paused
+- `initial`: Set thuộc tính về default value. [Đọc thêm](https://www.w3schools.com/cssref/css_initial.asp)
+- `inherit`: Kế thừa propety từ parent element. [Đọc thêm](https://www.w3schools.com/cssref/css_inherit.asp)
+
+Ví dụ cho `paused`:
+
+```css
+    div:hover {
+        animation-play-state: paused;
+    }
+
+    @keyframes mymove {
+        from {left: 0px;}
+        to {left: 200px;}
+    }
+```
+
+Khi element đang thực hiện animation mà bị hover nó sẽ đứng yên (dừng animation), khi bỏ hover nó sẽ tiếp tục animation.
+
+**Chú ý: Đối với các animation thực hiện chuyển động thì cần set position của element khác static.**
+
+[Xem thêm tại](https://www.w3schools.com/css/css3_animations.asp)
 
 ## VII Function
