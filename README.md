@@ -260,11 +260,11 @@ Ví dụ :
 
             <h1>Transition + Transform</h1>
 
-            <p>Hover over the div element below:</p>
+            `<p>`Hover over the div element below:</p>
 
             <div></div>
 
-            <p><b>Note:</b> This example does not work in Internet Explorer 9 and earlier versions.</p>
+            `<p>`<b>Note:</b> This example does not work in Internet Explorer 9 and earlier versions.</p>
 
         </body>
     </html>
@@ -378,3 +378,215 @@ Khi element đang thực hiện animation mà bị hover nó sẽ đứng yên (
 [Xem thêm tại](https://www.w3schools.com/css/css3_animations.asp)
 
 ## VII Function
+
+### 1. calc()
+
+- Dùng để thực hiện tính toán trong CSS
+
+**Ví dụ:**
+
+```css
+    #div1 {
+        position: absolute;
+        left: 50px;
+        width: calc(100% - 100px);
+        border: 1px solid black;
+        background-color: yellow;
+        padding: 5px;
+        text-align: center;
+    }
+```
+
+Ví dụ trên sẽ set `width` của `div` là `(chiều rộng parent - 100px)`
+
+### 2. attr()
+
+- Trả về giá trị attribute của element
+
+**Ví dụ:**
+
+```css
+    a:after {content: " (" attr(href) ")";}
+```
+
+```html
+    <a href="https://www.w3schools.com">Visit W3Schools</a>
+```
+
+Khi dùng như trên thì sẽ thêm vào sau content bên trong thẻ `a` là `(https://www.w3schools.com)`. Như vậy thẻ a sẽ hiện thị là: `Visit W3Schools (https://www.w3schools.com)`
+
+### 3. rgb() và rgba()
+
+Set màu. Trong đó:
+
+- `rgb(r,g,b)` là hệ màu rbg thông thường
+- `rgba(r,g,b,o)` là hệ mà với opacity là giá trị `o` cuối cùng trong công thức với chỉ số nằm trong đoạn **[0-1]**
+
+## VIII. CSS Varibbles
+
+CSS `var` dùng để gán giá trị cho một biến nào đó và sử dụng trong suốt css work space. Việc sủ dụng biến này khá giống với biến của các ngôn ngữ lập trình. Nó cũng phân ra làm hai loại:
+
+- Biến toàn cục: dùng cho tất các element trong css work space
+- Biến cục bộ: chỉ dùng được trong chính element declared nó.
+
+**Ví dụ: thông thường ta sẽ set color property cho các element như sau.**
+
+```css
+    body { background-color: #1e90ff; }
+
+    h2 { border-bottom: 2px solid #1e90ff; }
+
+    .container {
+        color: #1e90ff;
+        background-color: #ffffff;
+        padding: 15px;
+    }
+
+    button {
+        background-color: #ffffff;
+        color: #1e90ff;
+        border: 1px solid #1e90ff;
+        padding: 5px;
+    }
+```
+
+Thay vì việc lặp lại các giá trị mã màu như trên ta có thể dùng biến như sau.
+
+Đầu tiên cần declared biến. Ví dụ để declared biến toàn cục ta làm như sau:
+
+```css
+    :root {
+        --blue: #1e90ff;
+        --white: #ffffff;
+    }
+```
+
+`:root` đại diện cho toàn bộ document. Việc đặt tên biến bắt buộc phải có `--` đằng trước. Như trên là `--blue`, đây chính là tên biến và `#1e90ff` là giá trị.
+
+Để dùng biến trong các element ta sử dụng syntax:
+
+```css
+    var(tên biến, value)
+```
+
+```css
+    :root {
+        --blue: #1e90ff;
+        --white: #ffffff;
+    }
+
+    body { background-color: var(--blue); }
+
+    h2 { border-bottom: 2px solid var(--blue); }
+
+    .container {
+      color: var(--blue);
+      background-color: var(--white);       
+      padding: 15px;
+    }
+
+    button {
+      background-color: var(--white);
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 5px;
+    }
+```
+
+Trong đó lưu ý tên biến đúng quy ước là `--name`. Value là optional giá trị value sẽ được áp cho biến nếu như nó chưa được định nghĩa. Ví dụ ở trên ta đã định nghĩa 2 biến `--blue` và `--white` nhưng nếu ta có 1 class nào đó. Ví dụ:
+
+```css
+    .demo {
+        color: var(--black, #000000);
+    }
+```
+
+Biến `--black` chưa được định nghĩa cho nên nó sẽ nhận giá trị theo sau như khai báo là `#000000`. Dĩ nhiên nếu như ta để là `(--blue,#000000)` thì giá trị `#000000` không được áp dụng vì biến `--blue` đã được khai báo từ trước.
+
+Việc sử dụng biến như trên giúp cho css của ta dễ đọc hơn. Nếu muốn đổi màu chỉ cần thay đổi giá trị tại phần khai báo lúc đầu.
+
+### 1. Ghi đè var
+
+Trong trường hợp biến cục bộ cùng tên với biến toàn cục thì nó sẽ ghi đè biến toàn cục.
+
+**Ví dụ:**
+
+```css
+    :root {
+        --blue: #1e90ff;
+        --white: #ffffff;
+    }
+
+    body { background-color: var(--blue); }
+
+    h2 { border-bottom: 2px solid var(--blue); }
+
+    .container {
+      color: var(--blue);
+      background-color: var(--white);
+      padding: 15px;
+    }
+
+    button {
+        --blue: #000000;
+      background-color: var(--white);
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 5px;
+    }
+```
+
+Ví dụ trên ta đã ghi đè biến `--blue` trong button. Vì vậy boder của button sẽ có màu `#000000` thay vì `#1e90ff`
+
+IX. CSS pseudo-class và pseudo-element
+
+**TẤT CẢ PSEUDO ELEMENT:**
+
+Selector | Example | Example description
+---------|---------|--------------------
+::after | p::after | Insert something after the content of each `<p>` element
+::before | p::before | Insert something before the content of each `<p>` element
+::first-letter | p::first-letter | Selects the first letter of each `<p>` element
+::first-line | p::first-line | Selects the first line of each `<p>` element
+::marker | ::marker | Selects the markers of list items
+::selection | p::selection | Selects the portion of an element that is selected by a user
+
+====================================================
+
+**TẤT CẢ PSEUDO CLASSES:**
+
+Selector | Example | Example description
+---------|---------|--------------------
+:active | a:active | Selects the active link
+:checked | input:checked | Selects every checked `<input>` element
+:disabled | input:disabled | Selects every disabled `<input>` element
+:empty | p:empty | Selects every `<p>` element that has no children
+:enabled | input:enabled | Selects every enabled `<input>` element
+:first-child | p:first-child | Selects every `<p>` elements that is the first child of its parent
+:first-of-type | p:first-of-type | Selects every `<p>` element that is the first `<p>` element of its parent
+:focus | input:focus | Selects the `<input>` element that has focus
+:hover | a:hover | Selects links on mouse over
+:in-range | input:in-range | Selects `<input>` elements with a value within a specified range
+:invalid | input:invalid | Selects all `<input>` elements with an invalid value
+:lang(language) | p:lang(it) | Selects every `<p>` element with a lang attribute value starting with "it"
+:last-child | p:last-child | Selects every `<p>` elements that is the last child of its parent
+:last-of-type | p:last-of-type | Selects every `<p>` element that is the last `<p>` element of its parent
+:link | a:link | Selects all unvisited links
+:not(selector) | :not(p) | Selects every element that is not a `<p>` element
+:nth-child(n) | p:nth-child(2) | Selects every `<p>` element that is the second child of its parent
+:nth-last-child(n) | p:nth-last-child(2) | Selects every `<p>` element that is the second child of its parent, counting from the last child
+:nth-last-of-type(n) | p:nth-last-of-type(2) | Selects every `<p>` element that is the second `<p>` element of its parent, counting from the last child
+:nth-of-type(n) | p:nth-of-type(2) | Selects every `<p>` element that is the second `<p>` element of its parent
+:only-of-type | p:only-of-type | Selects every `<p>` element that is the only `<p>` element of its parent
+:only-child | p:only-child | Selects every `<p>` element that is the only child of its parent
+:optional | input:optional | Selects `<input>` elements with no "required" attribute
+:out-of-range | input:out-of-range | Selects `<input>` elements with a value outside a specified range
+:read-only | input:read-only | Selects `<input>` elements with a "readonly" attribute specified
+:read-write | input:read-write | Selects `<input>` elements with no "readonly" attribute
+:required | input:required | Selects `<input>` elements with a "required" attribute specified
+:root | root | Selects the document's root element
+:target | #news:target | Selects the current active #news element (clicked on a URL containing that anchor name)
+:valid | input:valid | Selects all `<input>` elements with a valid value
+:visited | a:visited | Selects all visited links
+
+**CHÚ Ý TỚI SYNTAX DẤU `:` VÀ `::`.**
